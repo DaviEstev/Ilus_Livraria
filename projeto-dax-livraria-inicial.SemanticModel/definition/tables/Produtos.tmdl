@@ -1,0 +1,90 @@
+table Produtos
+	lineageTag: bd4c8869-b974-4228-bb32-b09a48a8dce5
+
+	column 'Codigo do produto'
+		dataType: int64
+		formatString: 0
+		lineageTag: c9b0f76f-b3f8-4acf-be1d-4db45391217f
+		summarizeBy: none
+		sourceColumn: Codigo do produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome do produto'
+		dataType: string
+		lineageTag: f22ad4c5-11e5-47c9-8fbb-dbce5df35d73
+		summarizeBy: none
+		sourceColumn: Nome do produto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Categoria
+		dataType: string
+		lineageTag: 31ba9707-f885-40f9-9b39-b137e4eb382c
+		summarizeBy: none
+		sourceColumn: Categoria
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo
+		dataType: string
+		lineageTag: 24a1e27f-9e0c-48c5-a144-049f8791984f
+		summarizeBy: none
+		sourceColumn: Tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preco
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 232ceeb1-467d-4280-a320-ac51baeddfcd
+		summarizeBy: none
+		sourceColumn: Preco
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Custo
+		dataType: decimal
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 4134cfce-cc5c-4b03-86f8-1d2fd0bb92d8
+		summarizeBy: none
+		sourceColumn: Custo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Desconto Preco' = Produtos[Preco] * 0.5
+		lineageTag: f4ad2fc4-a6bd-495e-95bd-bd6a642cc8a3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Desconto Preco Funcao' = DIVIDE(Produtos[Preco], 2, 0)
+		lineageTag: 3763a8c6-e94d-4836-a843-b783ddde5371
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Produtos = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents(#"Fonte Dados" & "dataset-vendas-livraria.xlsx"), null, true),
+				    Table_3_Table = Fonte{[Item="Table_3",Kind="Table"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Table_3_Table,{{"Codigo do produto", Int64.Type}, {"Nome do produto", type text}, {"Categoria", type text}, {"Tipo", type text}, {"Preco", type number}, {"Custo", type number}}),
+				    #"Tipo Alterado com Localidade" = Table.TransformColumnTypes(#"Tipo Alterado", {{"Preco", Currency.Type}}, "pt-BR"),
+				    #"Tipo Alterado com Localidade1" = Table.TransformColumnTypes(#"Tipo Alterado com Localidade", {{"Custo", Currency.Type}}, "pt-BR")
+				in
+				    #"Tipo Alterado com Localidade1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

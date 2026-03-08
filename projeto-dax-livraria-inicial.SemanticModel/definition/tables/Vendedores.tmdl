@@ -1,0 +1,44 @@
+table Vendedores
+	lineageTag: 17876e84-06b6-41e2-ba7f-4f48aaf454f2
+
+	column Matricula
+		dataType: int64
+		formatString: 0
+		lineageTag: a1044cc4-da58-42c0-8562-5d7a688022b0
+		summarizeBy: none
+		sourceColumn: Matricula
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome
+		dataType: string
+		lineageTag: 95185f1a-48ea-4e4f-9d52-c55c91aceffb
+		summarizeBy: none
+		sourceColumn: Nome
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Percentual Comissao'
+		dataType: double
+		lineageTag: 18840ec5-e1ff-4d67-8ed3-ec2f475a743e
+		summarizeBy: none
+		sourceColumn: Percentual Comissao
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Vendedores = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents(#"Fonte Dados" & "dataset-vendas-livraria.xlsx"), null, true),
+				    Table_4_Table = Fonte{[Item="Table_4",Kind="Table"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Table_4_Table,{{"Matricula", Int64.Type}, {"Nome", type text}, {"Percentual Comissao", type number}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

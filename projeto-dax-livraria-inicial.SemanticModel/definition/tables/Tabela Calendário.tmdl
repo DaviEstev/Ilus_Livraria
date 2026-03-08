@@ -1,0 +1,105 @@
+table 'Tabela Calendário'
+	lineageTag: fc7d02f4-c5fb-44a6-abeb-9b4e2eb3ca5a
+
+	column Date
+		formatString: General Date
+		lineageTag: c741a14c-2fba-4020-999e-6f41e7d5e623
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: 6d02ba02-8741-451f-bb81-f623e2d73031
+			defaultHierarchy: LocalDateTable_3cacf125-9030-4475-aa2a-288543353f9c.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia num'
+		formatString: 0
+		lineageTag: ec3b9316-81aa-4a0d-92c1-1133e31ba569
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Dia num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia nome'
+		lineageTag: 11c1eac3-6926-4b77-94fc-e3db2b99a3c9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia nome]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia Semana'
+		formatString: 0
+		lineageTag: 8d5ef7ac-f7f5-4b03-9a0e-8d4a546a8ccc
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Dia Semana]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Semana Num'
+		formatString: 0
+		lineageTag: ece9f0e5-1d5c-4724-ba3c-c47094bb9a58
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Semana Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês Num'
+		formatString: 0
+		lineageTag: bb0ad65d-73d9-462e-b489-9f750ddb5ed6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Mês Num]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mês Nome'
+		lineageTag: 521a1a8e-fc45-46a1-952e-83b0bbde3659
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mês Nome]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		formatString: 0
+		lineageTag: 1cee76cc-711b-4b1c-9c08-2446f5e3561f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano
+		formatString: 0
+		lineageTag: c3d32145-a1b5-40a0-ab0b-9438f4d2804e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Ano]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Tabela Calendário' = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    CALENDARAUTO(),
+				    "Dia num", DAY([Date]),
+				    "Dia nome", FORMAT([Date], "dddd"),
+				    "Dia Semana", WEEKDAY([Date]),
+				    "Semana Num", WEEKNUM([Date]),
+				    "Mês Num", MONTH([Date]),
+				    "Mês Nome", FORMAT([Date], "mmm"),
+				    "Trimestre", QUARTER([Date]),
+				    "Ano", YEAR([Date])
+				)
+
+	annotation PBI_Id = 632dbd44ae4d45f5ba94383c4a132816
+

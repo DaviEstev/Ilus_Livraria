@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "projeto-dax-livraria-inicial"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "80008b0e-b1b4-4630-b1dd-142078971cb6"
+  }
+}

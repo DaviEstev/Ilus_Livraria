@@ -1,0 +1,56 @@
+table InfoVendas
+	lineageTag: e0c553da-15eb-4b48-a9c2-81c4b89393e8
+
+	column Matricula
+		dataType: int64
+		formatString: 0
+		lineageTag: 064f953c-ade9-4986-a5a4-b6e9dbdfae48
+		summarizeBy: none
+		sourceColumn: Matricula
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 50154d21-ae72-42e0-be96-faf58a9a730d
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Numero
+		dataType: int64
+		formatString: 0
+		lineageTag: f2b71627-1cce-4b67-a812-87cdf25801c3
+		summarizeBy: none
+		sourceColumn: Numero
+
+		annotation SummarizationSetBy = Automatic
+
+	column Imposto
+		dataType: double
+		lineageTag: 5c27ce20-f7d7-4de0-80ae-5b05c92d6488
+		summarizeBy: sum
+		sourceColumn: Imposto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition InfoVendas = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents(#"Fonte Dados" & "dataset-vendas-livraria.xlsx"), null, true),
+				    #"Itens Notas_Sheet" = Fonte{[Item="Table_2",Kind="Table"]}[Data],
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Itens Notas_Sheet",{{"Matricula", Int64.Type}, {"Data", type date}, {"Numero", Int64.Type}, {"Imposto", type number}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

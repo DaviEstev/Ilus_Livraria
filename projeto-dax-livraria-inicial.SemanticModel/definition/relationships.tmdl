@@ -1,0 +1,21 @@
+relationship AutoDetected_8bb17c04-9a70-4362-a454-0e0d590a894d
+	fromColumn: Vendas.Numero
+	toColumn: InfoVendas.Numero
+
+relationship AutoDetected_2d887d65-1894-4d2d-b1d3-34a6e6e46993
+	fromColumn: Vendas.'Codigo do produto'
+	toColumn: Produtos.'Codigo do produto'
+
+relationship AutoDetected_798275bd-becb-481a-b6d9-6644942d4370
+	fromColumn: InfoVendas.Matricula
+	toColumn: Vendedores.Matricula
+
+relationship 6d02ba02-8741-451f-bb81-f623e2d73031
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Tabela Calendário'.Date
+	toColumn: LocalDateTable_3cacf125-9030-4475-aa2a-288543353f9c.Date
+
+relationship ccce9e15-0a5c-c626-2191-97e96c80c7d0
+	fromColumn: InfoVendas.Data
+	toColumn: 'Tabela Calendário'.Date
+

@@ -1,0 +1,350 @@
+table Medidas
+	lineageTag: 6f8af79a-435a-4f67-90b9-f4dfbfeec816
+
+	measure 'Margem Lucro %' = DIVIDE([Margem Lucro],[Total Vendas],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem de Lucro
+		lineageTag: 2d89085f-d7fd-4749-8cd4-2b8e2291f373
+
+	measure 'Total Vendas' = ```
+			
+			 SUMX(
+			    Vendas ,
+			    Vendas[Quantidade] * Vendas[Preco Calculado]
+			    ) 
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Vendas
+		lineageTag: 789f555a-58ff-4fea-8daf-923d27ba1aec
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem Lucro' = ```
+			SUMX(
+			    Vendas,
+			    Vendas[Quantidade] * (Vendas[Preco Calculado] - Vendas[Custo Calculado])
+			    ) 
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Margem de Lucro
+		lineageTag: 36991151-0cf7-4720-8f3b-3acf1bee8a64
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Vendas Ebook' = ```
+			
+			      SUMX(
+			        FILTER(
+			            Vendas,
+			            RELATED(Produtos[Tipo]) = "Ebook"
+			        ),
+			    Vendas[Quantidade] * Vendas[Preco Calculado]
+			    ) 
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: Vendas Ebook
+		lineageTag: cd42e1ff-8933-4f7b-9223-57ed3548bbf8
+
+	measure 'Margem Ebook' = ```
+			
+			        SUMX(
+			            FILTER(
+			                Vendas,
+			                RELATED(Produtos[Tipo]) = "Ebook"
+			            ),
+			    Vendas[Quantidade] * (Vendas[Preco Calculado] - Vendas[Custo Calculado])
+			    ) 
+			```
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		displayFolder: Margem Ebook
+		lineageTag: b7d5cfd0-b53e-4206-991f-8342bce04267
+
+	measure 'Margem Ebook %' = DIVIDE([Margem Ebook],[Vendas Ebook],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem Ebook
+		lineageTag: 3909f6d9-c077-433d-8bef-44b86b20b625
+
+	measure 'Vendas Ebook ALL' = ```
+			
+			      SUMX(
+			        FILTER(
+			         ALL(Vendas),
+			            RELATED(Produtos[Tipo]) = "Ebook"
+			        ),
+			    Vendas[Quantidade] * Vendas[Preco Calculado]
+			    ) 
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Vendas Ebook
+		lineageTag: 10204298-8340-4777-adb1-cc05787df247
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem Ebook ALL' = ```
+			
+			        SUMX(
+			            FILTER(
+			                ALL(Vendas),
+			                RELATED(Produtos[Tipo]) = "Ebook"
+			            ),
+			    Vendas[Quantidade] * (Vendas[Preco Calculado] - Vendas[Custo Calculado])
+			    ) 
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Margem Ebook
+		lineageTag: 0785816c-5b78-4147-b78d-7115da34acbd
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem Ebook % ALL' = DIVIDE([Margem Ebook ALL],[Vendas Ebook ALL],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem Ebook
+		lineageTag: d0b91f27-83bd-4bff-bdb5-caeba0eb1aad
+
+	measure 'Receita Total Data Science' = ```
+			
+			          SUMX(
+			        FILTER(
+			            ALL(Vendas),
+			            RELATED(Produtos[Categoria]) = "Data Science"
+			        ),
+			    [Total Vendas]
+			    ) 
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 048d43f8-1159-4f41-8db1-7c261b229353
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Vendas Cat. Big Data' = ```
+			
+			    SUMX(
+			        FILTER(
+			            Vendas,
+			            RELATED(Produtos[Categoria]) = "Big Data"
+			        )
+			        ,
+			        [Total Vendas]
+			    )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 389f9385-3ee1-4424-a7e3-154b9d2dddd3
+
+	measure 'Vendas Cat. Big Data ALL' = ```
+			
+			        SUMX(
+			        FILTER(
+			            ALL(Vendas),
+			            RELATED(Produtos[Categoria]) = "Big Data"
+			        )
+			        ,
+			        [Total Vendas]
+			    )
+			
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 19508ed0-cb63-451e-91b7-3ccfbb5c68b8
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Vendas David' = ```
+			
+			   SUMX(
+			        FILTER(
+			            Vendas,
+			            RELATED(Vendedores[Nome]) = "David Neves"
+			        ),
+			    Vendas[Quantidade] * Vendas[Preco Calculado]
+			    ) 
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Vendas David
+		lineageTag: 2b7b389a-d2a4-4b75-b1a0-2178d6341ba1
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem David' = ```
+			
+			        SUMX(
+			            FILTER(
+			                Vendas,
+			                RELATED(Vendedores[Nome]) = "David Neves"
+			            ),
+			    Vendas[Quantidade] * (Vendas[Preco Calculado] - Vendas[Custo Calculado])
+			    )
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Margem David
+		lineageTag: 3cfcbac4-c555-46f8-9de9-581349dd93b2
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem David %' = DIVIDE([Margem David],[Vendas David],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem David
+		lineageTag: b6c53207-712b-454e-8b0d-c3bb619d9c0d
+
+	measure 'Vendas David CALCULATE' = ```
+			
+			    CALCULATE(
+			        [Total Vendas],
+			        FILTER(
+			            Vendas,
+			            RELATED(Vendedores[Nome]) = "David Neves"
+			        )
+			    )
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Vendas David
+		lineageTag: 884c9597-6080-44ea-9dbd-39b9d351d978
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem David CALCULATE' = ```
+			
+			    CALCULATE(
+			        [Margem Lucro],
+			        FILTER(
+			            Vendas,
+			            RELATED(Vendedores[Nome]) = "David Neves"
+			            )
+			    )
+			
+			    
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		displayFolder: Margem David
+		lineageTag: c13e9612-8c45-4b9e-b9de-ac2fc189c265
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem David % CALCULATED' = ```
+			
+			    CALCULATE(
+			         [Margem Lucro %],
+			         FILTER(
+			            Vendas,
+			            RELATED(Vendedores[Nome]) = "David Neves"
+			         )
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem David
+		lineageTag: 17900fc1-67fc-4232-a5bd-49124a1b8af4
+
+	measure 'Total Vendas Data Analytics' = ```
+			
+			        CALCULATE(
+			        [Total Vendas],
+			        FILTER(
+			            Vendas,
+			            RELATED(Produtos[Categoria]) = "Data Analytics" || RELATED(Produtos[Categoria]) = "Data Visualization"
+			        )
+			    )
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		lineageTag: 80b5aad4-f5cd-4436-90b0-fb592988c6fa
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Total VendasYTD' = ```
+			
+			    TOTALYTD(
+			        [Total Vendas],
+			        'Tabela Calendário'[Date]
+			    )
+			```
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: aa36d596-2400-4632-a279-fe71796a1f82
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Periodo Anterior' =
+			
+			CALCULATE(
+			    [Total Vendas],
+			    SAMEPERIODLASTYEAR('Tabela Calendário'[Date])
+			)
+		formatString: "R$"\ #,0.###############;-"R$"\ #,0.###############;"R$"\ #,0.###############
+		lineageTag: 30947d79-56e4-4746-a42f-d0acb5f2e92d
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure YoY = ```
+			
+			    DIVIDE(
+			        [Total Vendas] - [Periodo Anterior],
+			        [Periodo Anterior]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: aa19cfbd-787a-4af2-aa24-78d21b5bfb66
+
+	measure 'Ano Inicial' = ```
+			MIN('Tabela Calendário'[Ano])
+			
+			```
+		formatString: 0
+		lineageTag: 566d7eed-03da-4f09-9310-2000dc62cb81
+
+	measure 'Ano Final' = MAX('Tabela Calendário'[Ano])
+		formatString: 0
+		lineageTag: afb5301a-0678-4a51-99ac-c966fb26fb24
+
+	measure 'Período dos Dados' = ```
+			
+			"Período: " & 
+			FORMAT([Ano Inicial], "0") & 
+			" a " & 
+			FORMAT([Ano Final], "0")
+			
+			```
+		lineageTag: ba846485-26ae-4b78-8e8f-e82d822eec6e
+
+	measure 'Total Vendas ALL' = ```
+			
+			     SUMX(
+			    ALL(Vendas) ,
+			    Vendas[Quantidade] * Vendas[Preco Calculado]
+			    ) 
+			```
+		formatString: 0
+		displayFolder: Vendas
+		lineageTag: 2dad51ac-01a3-4b34-9525-804ffeaad895
+
+	measure 'Margem Lucro ALL' = ```
+			SUMX(
+			    ALL(Vendas),
+			    Vendas[Quantidade] * (Vendas[Preco Calculado] - Vendas[Custo Calculado])
+			    ) 
+			```
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		displayFolder: Margem de Lucro
+		lineageTag: 81442c8d-ff87-416d-a1d9-487c2e7d8320
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Margem Lucro ALL %' = DIVIDE([Margem Lucro ALL],[Total Vendas ALL],0)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Margem de Lucro
+		lineageTag: a87871ad-8c53-4581-b3c3-f971c9989358
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 0c385a79-0d32-438b-a99b-c9dd4192b6fe
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = cab5932698da4de086b7c4a6108befc4
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+
