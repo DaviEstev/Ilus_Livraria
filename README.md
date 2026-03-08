@@ -115,14 +115,7 @@ O dashboard foi desenvolvido no **Power BI Desktop**, contendo visualizações q
 
 📷 **Preview do Dashboard**
 
-![Imagem Dashboard](caminho/para/imagem.png)
-
-
-Exemplo:
-
-```
-assets/dashboard-livraria.png
-```
+![Imagem Dashboard](./fotoDashboardIlus.png)
 
 ---
 
